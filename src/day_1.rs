@@ -1,7 +1,7 @@
 pub fn star_1() {
-    let input = std::fs::read_to_string("inputs/day_1.txt").unwrap();
+    const INPUT: &str = include_str!("../inputs/day_1.txt");
     let mut sum = 0;
-    for line in input.lines() {
+    for line in INPUT.lines() {
         let mut first_digit: Option<u32> = None;
         let mut last_digit: Option<u32> = None;
         for char in line.chars() {
@@ -16,18 +16,19 @@ pub fn star_1() {
                 break;
             }
         }
-        // unwraps are safe assuming input is valid
+        // unwraps are safe assuming INPUT is valid
         // probably faster than string parsing
         sum += first_digit.unwrap() * 10 + last_digit.unwrap();
     }
     println!("{sum}");
 }
 
-pub fn star_2() {
-    let input = std::fs::read_to_string("inputs/day_1.txt").unwrap();
+pub fn star_2() -> u32 {
+    // let INPUT = std::fs::read_to_string("inputs/day_1.txt").unwrap();
+    const INPUT: &str = include_str!("../inputs/day_1.txt");
     let mut sum = 0;
     let num_names = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-    for line in input.lines() {
+    for line in INPUT.lines() {
         let mut first_digit: Option<u32> = None;
         let mut last_digit: Option<u32> = None;
         let line_len = line.len();
@@ -60,9 +61,29 @@ pub fn star_2() {
             }
 
         }
-        // unwraps are safe assuming input is valid
+        // unwraps are safe assuming INPUT is valid
         // probably faster than string parsing
         sum += first_digit.unwrap() * 10 + last_digit.unwrap();
     }
-    println!("{sum}")
+    sum
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate test;
+    use test::Bencher;
+    use crate::day_1::*;
+
+    #[bench]
+    fn bench_star_2(b: &mut Bencher) {
+        b.iter(|| {
+            star_2()
+        });
+    }
+    #[bench]
+    fn bench_star_1(b: &mut Bencher) {
+        b.iter(|| {
+            star_1()
+        });
+    }
 }
