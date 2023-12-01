@@ -1,5 +1,6 @@
-mod day_1_star_1;
+mod day_1;
 
 fn main() {
-    println!("Hello, world!");
+    // day_1::star_1();
+    day_1::star_2();
 }
