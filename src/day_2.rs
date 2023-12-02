@@ -48,8 +48,7 @@ pub fn star_2() {
     const INPUT: &str = include_str!("../inputs/day_2.txt");
     let mut power = 0;
     // for each game
-    for (mut id, game) in INPUT.lines().enumerate() {
-        id += 1; // enumerate starts at 0
+    for game in INPUT.lines() {
         let mut game_red = 0;
         let mut game_green = 0;
         let mut game_blue = 0;
