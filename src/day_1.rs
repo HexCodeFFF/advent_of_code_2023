@@ -27,7 +27,9 @@ pub fn star_2() -> u32 {
     // let INPUT = std::fs::read_to_string("inputs/day_1.txt").unwrap();
     const INPUT: &str = include_str!("../inputs/day_1.txt");
     let mut sum = 0;
-    let num_names = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+    let num_names = [
+        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    ];
     for line in INPUT.lines() {
         let mut first_digit: Option<u32> = None;
         let mut last_digit: Option<u32> = None;
@@ -59,7 +61,6 @@ pub fn star_2() -> u32 {
                 // last thing to modify this will be last digit
                 last_digit = Some(d);
             }
-
         }
         // unwraps are safe assuming INPUT is valid
         // probably faster than string parsing
@@ -71,19 +72,15 @@ pub fn star_2() -> u32 {
 #[cfg(test)]
 mod tests {
     extern crate test;
-    use test::Bencher;
     use crate::day_1::*;
+    use test::Bencher;
 
     #[bench]
     fn bench_star_2(b: &mut Bencher) {
-        b.iter(|| {
-            star_2()
-        });
+        b.iter(star_2);
     }
     #[bench]
     fn bench_star_1(b: &mut Bencher) {
-        b.iter(|| {
-            star_1()
-        });
+        b.iter(star_1);
     }
 }
