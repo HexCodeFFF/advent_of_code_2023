@@ -141,8 +141,8 @@ pub fn star_2() {
                                             offset_line_index as usize,
                                             offset_row_index as usize,
                                         ))
-                                        .and_modify(|vec| vec.push(n))
-                                        .or_default();
+                                        .or_default()
+                                        .push(n);
                                 }
                             }
                         }
@@ -167,9 +167,10 @@ pub fn star_2() {
     let mut sum = 0;
     for val in gears.into_values() {
         if val.len() == 2 {
-            sum += val.iter().reduce(|a, b| &(a * b)).unwrap();
+            sum += val.get(0).unwrap() * val.get(1).unwrap()
         }
     }
+    println!("{sum}")
 }
 
 #[cfg(test)]
