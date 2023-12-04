@@ -8,8 +8,16 @@ fn is_symbol(c: char) -> bool {
 
 pub fn star_1() {
     let mut sum = 0;
-    let num_of_lines = INPUT.lines().count();
-    for (line_index, line) in INPUT.lines().enumerate() {
+    let input: Vec<Vec<char>> = INPUT
+        // split into lines
+        .lines()
+        .collect::<Vec<&str>>()
+        // split lines into chars
+        .iter()
+        .map(|l| l.chars().collect::<Vec<char>>())
+        .collect();
+    let num_of_lines = input.len();
+    for (line_index, line) in input.iter().enumerate() {
         // println!("{line}");
         let mut row_index = 0;
         let line_len = line.len();
@@ -20,8 +28,8 @@ pub fn star_1() {
                 if row_index + len <= line_len {
                     let numslice = &line[row_index..row_index + len];
                     // println!("{numslice}");
-                    if numslice.chars().all(|c| c.is_ascii_digit()) {
-                        if let Ok(n) = numslice.parse::<usize>() {
+                    if numslice.iter().all(|c| c.is_ascii_digit()) {
+                        if let Ok(n) = numslice.iter().collect::<String>().parse::<usize>() {
                             // println!("num found: {n}");
                             num_at_pos = Some(n);
                             len_of_num = Some(len);
@@ -42,7 +50,7 @@ pub fn star_1() {
                     // if offset is valid
                     if (0..num_of_lines as isize).contains(&offset_line_index) {
                         // get the line
-                        let offset_line = INPUT.lines().nth(offset_line_index as usize).unwrap();
+                        let offset_line = &input[offset_line_index as usize];
                         // for each row offset
                         for row_offset in -1..(l as isize) + 1 {
                             // find the absolute index
@@ -50,8 +58,7 @@ pub fn star_1() {
                             // if offset is valid
                             if (0..line_len as isize).contains(&offset_row_index) {
                                 // get the char
-                                let offset_char =
-                                    offset_line.chars().nth(offset_row_index as usize).unwrap();
+                                let offset_char = offset_line[offset_row_index as usize];
                                 // if char is a symbol
                                 num_is_valid = is_symbol(offset_char);
                                 // break early to avoid extra computation
@@ -90,9 +97,17 @@ pub fn star_1() {
 }
 
 pub fn star_2() {
-    let num_of_lines = INPUT.lines().count();
+    let input: Vec<Vec<char>> = INPUT
+        // split into lines
+        .lines()
+        .collect::<Vec<&str>>()
+        // split lines into chars
+        .iter()
+        .map(|l| l.chars().collect::<Vec<char>>())
+        .collect();
+    let num_of_lines = input.len();
     let mut gears: HashMap<(usize, usize), Vec<usize>> = HashMap::new();
-    for (line_index, line) in INPUT.lines().enumerate() {
+    for (line_index, line) in input.iter().enumerate() {
         // println!("{line}");
         let mut row_index = 0;
         let line_len = line.len();
@@ -103,8 +118,8 @@ pub fn star_2() {
                 if row_index + len <= line_len {
                     let numslice = &line[row_index..row_index + len];
                     // println!("{numslice}");
-                    if numslice.chars().all(|c| c.is_ascii_digit()) {
-                        if let Ok(n) = numslice.parse::<usize>() {
+                    if numslice.iter().all(|c| c.is_ascii_digit()) {
+                        if let Ok(n) = numslice.iter().collect::<String>().parse::<usize>() {
                             // println!("num found: {n}");
                             num_at_pos = Some(n);
                             len_of_num = Some(len);
@@ -124,7 +139,7 @@ pub fn star_2() {
                     // if offset is valid
                     if (0..num_of_lines as isize).contains(&offset_line_index) {
                         // get the line
-                        let offset_line = INPUT.lines().nth(offset_line_index as usize).unwrap();
+                        let offset_line = &input[offset_line_index as usize];
                         // for each row offset
                         for row_offset in -1..(l as isize) + 1 {
                             // find the absolute index
@@ -132,8 +147,7 @@ pub fn star_2() {
                             // if offset is valid
                             if (0..line_len as isize).contains(&offset_row_index) {
                                 // get the char
-                                let offset_char =
-                                    offset_line.chars().nth(offset_row_index as usize).unwrap();
+                                let offset_char = offset_line[offset_row_index as usize];
                                 // if char is a symbol
                                 if offset_char == '*' {
                                     gears
