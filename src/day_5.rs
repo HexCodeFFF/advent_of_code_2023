@@ -1,7 +1,6 @@
-use std::cmp::{max, min};
 use std::ops::Range;
 
-const INPUT: &str = include_str!("../inputs/day_5_demo.txt");
+const INPUT: &str = include_str!("../inputs/day_5.txt");
 
 #[derive(Debug)]
 struct Mapping {
@@ -123,66 +122,6 @@ fn ranges_overlap(range: &Range<i64>, overlapper: &Range<i64>) -> RangeOverlap {
     }
 }
 
-#[derive(Debug)]
-struct Seed {
-    range: Range<i64>,
-    // processed: bool,
-}
-
-fn merge_ranges(vc: &mut Vec<Range<i64>>) {
-    dbg!(&vc);
-    let mut i = 0;
-    while i + 1 < vc.len() {
-        vc.sort_by_key(|v| v.start);
-        if vc[i].end >= vc[i + 1].start {
-            let lower = vc[i].clone();
-            let upper = vc[i + 1].clone();
-            vc.remove(i);
-            vc.remove(i);
-            vc.insert(i, lower.start..max(lower.end, upper.end))
-        } else {
-            i += 1;
-        }
-    }
-    // dbg!(&vc);
-}
-
-fn subtract_range_from_ranges(positive: Vec<Range<i64>>, subtract: Range<i64>) -> Vec<Range<i64>> {
-    let mut out: Vec<Range<i64>> = vec![];
-    for pos in positive {
-        let overlap = ranges_overlap(&pos, &subtract);
-        if let Some(l) = overlap.non_overlap_left {
-            out.push(l);
-        }
-        if let Some(l) = overlap.non_overlap_right {
-            out.push(l);
-        }
-    }
-    out
-}
-
-fn subtract_ranges_from_ranges(
-    positive: &mut Vec<Range<i64>>,
-    subtract: &mut Vec<Range<i64>>,
-) -> Vec<Range<i64>> {
-    merge_ranges(positive);
-    merge_ranges(subtract);
-    dbg!(&positive);
-    dbg!(&subtract);
-    let mut pos = positive.clone();
-    let mut out: Vec<Range<i64>> = vec![];
-    if !subtract.is_empty() {
-        for sub in subtract {
-            pos = subtract_range_from_ranges(pos, sub.clone())
-        }
-    } else {
-        out = pos.clone()
-    }
-
-    dbg!(&out);
-    out
-}
-
 pub fn star_2() {
     // each section
     let mut sections = INPUT.split("\n\n");
@@ -263,5 +202,24 @@ pub fn star_2() {
         }
         seeds_ranges = new_seeds;
     }
-    println!("{}", seeds_ranges.iter().map(|r| r.start).min().unwrap())
+    let yippee = seeds_ranges.iter().map(|r| r.start).min().unwrap();
+    // println!("{yippee}");
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate test;
+
+    use crate::day_5::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_star_2(b: &mut Bencher) {
+        b.iter(star_2);
+    }
+
+    #[bench]
+    fn bench_star_1(b: &mut Bencher) {
+        b.iter(star_1);
+    }
 }

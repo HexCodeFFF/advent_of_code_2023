@@ -56,3 +56,20 @@ pub fn star_2() {
     }
     println!("{num_of_beat_times}");
 }
+#[cfg(test)]
+mod tests {
+    extern crate test;
+
+    use crate::day_6::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_star_2(b: &mut Bencher) {
+        b.iter(star_2);
+    }
+
+    #[bench]
+    fn bench_star_1(b: &mut Bencher) {
+        b.iter(star_1);
+    }
+}
