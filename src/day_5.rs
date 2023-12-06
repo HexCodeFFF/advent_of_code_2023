@@ -1,3 +1,4 @@
+use std::cmp::max;
 use std::ops::Range;
 
 const INPUT: &str = include_str!("../inputs/day_5.txt");
@@ -122,6 +123,24 @@ fn ranges_overlap(range: &Range<i64>, overlapper: &Range<i64>) -> RangeOverlap {
     }
 }
 
+fn merge_ranges(vc: &mut Vec<Range<i64>>) {
+    dbg!(&vc);
+    let mut i = 0;
+    while i + 1 < vc.len() {
+        vc.sort_by_key(|v| v.start);
+        if vc[i].end >= vc[i + 1].start {
+            let lower = vc[i].clone();
+            let upper = vc[i + 1].clone();
+            vc.remove(i);
+            vc.remove(i);
+            vc.insert(i, lower.start..max(lower.end, upper.end))
+        } else {
+            i += 1;
+        }
+    }
+    // dbg!(&vc);
+}
+
 pub fn star_2() {
     // each section
     let mut sections = INPUT.split("\n\n");
@@ -201,9 +220,10 @@ pub fn star_2() {
             new_seeds.append(&mut mapped_seeds);
         }
         seeds_ranges = new_seeds;
+        merge_ranges(&mut seeds_ranges);
     }
     let yippee = seeds_ranges.iter().map(|r| r.start).min().unwrap();
-    // println!("{yippee}");
+    println!("{yippee}");
 }
 
 #[cfg(test)]
