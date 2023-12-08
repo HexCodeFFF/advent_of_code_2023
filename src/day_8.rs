@@ -64,3 +64,20 @@ pub fn star_2() {
     }
     println!("{}", out)
 }
+#[cfg(test)]
+mod tests {
+    extern crate test;
+
+    use crate::day_8::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_star_2(b: &mut Bencher) {
+        b.iter(star_2);
+    }
+
+    #[bench]
+    fn bench_star_1(b: &mut Bencher) {
+        b.iter(star_1);
+    }
+}

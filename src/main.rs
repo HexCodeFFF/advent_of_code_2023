@@ -23,8 +23,8 @@ fn main() {
     // day_5::star_2();
     // day_6::star_1();
     // day_6::star_2();
-    day_7::star_1();
-    // day_7::star_2();
+    // day_7::star_1();
+    day_7::star_2();
     // day_8::star_1();
     // day_8::star_2();
 }
