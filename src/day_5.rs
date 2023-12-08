@@ -124,7 +124,7 @@ fn ranges_overlap(range: &Range<i64>, overlapper: &Range<i64>) -> RangeOverlap {
 }
 
 fn merge_ranges(vc: &mut Vec<Range<i64>>) {
-    dbg!(&vc);
+    // dbg!(&vc);
     let mut i = 0;
     while i + 1 < vc.len() {
         vc.sort_by_key(|v| v.start);
@@ -165,7 +165,6 @@ pub fn star_2() {
     // might not be necessary
     // seeds_ranges.sort_by_key(|r| r.start);
     for section in sections {
-        dbg!(&seeds_ranges.len());
         let mut map: Vec<Mapping> = vec![];
         // first entry is label, skip and then iterate
         for entry in section.split('\n').skip(1) {
@@ -207,11 +206,7 @@ pub fn star_2() {
                         mapped_seeds.push(l)
                     }
                     let len = replace.len();
-                    if replace.is_empty() {
-                        this_seed.remove(i);
-                    } else {
-                        this_seed.splice(i..i + 1, replace);
-                    }
+                    this_seed.splice(i..i + 1, replace);
 
                     i += len;
                 }
