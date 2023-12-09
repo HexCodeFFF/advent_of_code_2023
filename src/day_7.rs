@@ -1,14 +1,10 @@
-use std::cmp::{Ordering, Reverse};
+use std::cmp::Reverse;
 use std::collections::HashMap;
-use std::hash::Hash;
 
 const INPUT: &str = include_str!("../inputs/day_7.txt");
 
-fn count_items<T>(list: &Vec<T>) -> HashMap<T, usize>
-where
-    T: Hash + Eq + Sized + Copy,
-{
-    let mut map: HashMap<T, usize> = HashMap::with_capacity(13);
+fn count_items(list: &[char; 5]) -> HashMap<char, usize> {
+    let mut map: HashMap<char, usize> = HashMap::with_capacity(13);
     for item in list {
         map.entry(*item).and_modify(|s| *s += 1).or_insert(1usize);
     }
@@ -36,7 +32,7 @@ fn card_value(card: &char) -> u8 {
     }
 }
 
-fn hand_value(hand: &Vec<char>) -> usize {
+fn hand_value(hand: &[char; 5]) -> u8 {
     let counted_hand = count_items(hand);
     let mut values = counted_hand.values().collect::<Vec<_>>();
     // doing a sort_by is faster than sort then reverse
@@ -66,38 +62,40 @@ fn hand_value(hand: &Vec<char>) -> usize {
     }
 }
 
-fn compare_hands(hand1: &Vec<char>, hand2: &Vec<char>) -> Ordering {
-    let value1 = hand_value(hand1);
-    let value2 = hand_value(hand2);
-    if value1 == value2 {
-        for (card1, card2) in hand1.iter().zip(hand2.iter()) {
-            if card1 != card2 {
-                return card_value(card1).cmp(&card_value(card2));
-            }
-        }
-        panic!("Hands {hand1:#?} and {hand2:#?} are identical in value!")
-    } else {
-        value1.cmp(&value2)
-    }
+fn full_hand_value(hand: &[char; 5]) -> u32 {
+    // 4,3,2,1,0 = card value
+    // h = hand value
+    // _ = unused
+    // ____ ____ hhhh 4444 3333 2222 1111 0000
+    let mut out: u32 = 0;
+    out |= card_value(&hand[4]) as u32;
+    out |= (card_value(&hand[3]) as u32) << 4;
+    out |= (card_value(&hand[2]) as u32) << 8;
+    out |= (card_value(&hand[1]) as u32) << 12;
+    out |= (card_value(&hand[0]) as u32) << 16;
+    out |= (hand_value(hand) as u32) << 20;
+    out
 }
 
 pub fn star_1() {
-    let mut hands: Vec<_> = INPUT
+    let mut hands: Vec<([char; 5], usize, u32)> = INPUT
         .lines()
         .map(|l| {
             let lines: Vec<_> = l.split_ascii_whitespace().collect();
+            let hand: [char; 5] = lines[0].chars().collect::<Vec<char>>().try_into().unwrap();
             (
-                lines[0].chars().collect::<Vec<char>>(),
+                hand,
                 lines[1].parse::<usize>().unwrap(),
+                full_hand_value(&hand),
             )
         })
         .collect();
-    hands.sort_by(|hand1, hand2| compare_hands(&hand1.0, &hand2.0));
+    hands.sort_by_key(|hand| hand.2);
     let mut winnings = 0;
-    for (i, (_, bid)) in hands.iter().enumerate() {
+    for (i, (_, bid, _)) in hands.iter().enumerate() {
         winnings += (i + 1) * bid;
     }
-    println!("{winnings}")
+    // println!("{winnings}")
 }
 
 fn card_value2(card: &char) -> u8 {
@@ -121,19 +119,17 @@ fn card_value2(card: &char) -> u8 {
     }
 }
 
-fn replace_in_vec(haystack: &Vec<char>, needle: &char, replace: &char) -> Vec<char> {
-    let mut out: Vec<char> = Vec::with_capacity(haystack.len());
-    for item in haystack {
+fn replace_in_vec(haystack: &[char; 5], needle: &char, replace: &char) -> [char; 5] {
+    let mut out: [char; 5] = *haystack;
+    for item in out.iter_mut() {
         if item == needle {
-            out.push(*replace)
-        } else {
-            out.push(*item);
+            *item = *replace
         }
     }
     out
 }
 
-fn hand_value2(hand: &Vec<char>) -> usize {
+fn hand_value2(hand: &[char; 5]) -> u8 {
     [
         'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J',
     ]
@@ -143,38 +139,42 @@ fn hand_value2(hand: &Vec<char>) -> usize {
     .unwrap()
 }
 
-fn compare_hands2(hand1: &Vec<char>, hand2: &Vec<char>) -> Ordering {
-    let value1 = hand_value2(hand1);
-    let value2 = hand_value2(hand2);
-    if value1 == value2 {
-        for (card1, card2) in hand1.iter().zip(hand2.iter()) {
-            if card1 != card2 {
-                return card_value2(card1).cmp(&card_value2(card2));
-            }
-        }
-        panic!("Hands {hand1:#?} and {hand2:#?} are identical in value!")
-    } else {
-        value1.cmp(&value2)
-    }
+fn full_hand_value2(hand: &[char; 5]) -> u32 {
+    // 4,3,2,1,0 = card value
+    // h = hand value
+    // _ = unused
+    // ____ ____ hhhh 4444 3333 2222 1111 0000
+    let mut out: u32 = 0;
+    out |= card_value2(&hand[4]) as u32;
+    out |= (card_value2(&hand[3]) as u32) << 4;
+    out |= (card_value2(&hand[2]) as u32) << 8;
+    out |= (card_value2(&hand[1]) as u32) << 12;
+    out |= (card_value2(&hand[0]) as u32) << 16;
+    out |= (hand_value2(hand) as u32) << 20;
+    out
 }
+
 pub fn star_2() {
-    let mut hands: Vec<_> = INPUT
+    let mut hands: Vec<([char; 5], usize, u32)> = INPUT
         .lines()
         .map(|l| {
             let lines: Vec<_> = l.split_ascii_whitespace().collect();
+            let hand: [char; 5] = lines[0].chars().collect::<Vec<char>>().try_into().unwrap();
             (
-                lines[0].chars().collect::<Vec<char>>(),
+                hand,
                 lines[1].parse::<usize>().unwrap(),
+                full_hand_value2(&hand),
             )
         })
         .collect();
-    hands.sort_by(|hand1, hand2| compare_hands2(&hand1.0, &hand2.0));
+    hands.sort_by_key(|hand| hand.2);
     let mut winnings = 0;
-    for (i, (_, bid)) in hands.iter().enumerate() {
+    for (i, (_, bid, _)) in hands.iter().enumerate() {
         winnings += (i + 1) * bid;
     }
-    println!("{winnings}")
+    // println!("{winnings}")
 }
+
 #[cfg(test)]
 mod tests {
     extern crate test;

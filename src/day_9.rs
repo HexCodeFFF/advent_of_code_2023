@@ -1,5 +1,3 @@
-use std::cmp::max;
-
 const INPUT: &str = include_str!("../inputs/day_9.txt");
 pub fn star_1() {
     let mut sum: i64 = 0;

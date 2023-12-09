@@ -1,4 +1,3 @@
-use num;
 use std::collections::HashMap;
 
 const INPUT: &str = include_str!("../inputs/day_8.txt");
