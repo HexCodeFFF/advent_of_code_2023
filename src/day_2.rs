@@ -1,7 +1,6 @@
 use std::cmp::max;
-
+const INPUT: &str = include_str!("../inputs/day_2.txt");
 pub fn star_1() {
-    const INPUT: &str = include_str!("../inputs/day_2.txt");
     let mut sum = 0;
     // for each game
     for (mut id, game) in INPUT.lines().enumerate() {
@@ -45,7 +44,6 @@ pub fn star_1() {
 }
 
 pub fn star_2() {
-    const INPUT: &str = include_str!("../inputs/day_2.txt");
     let mut power = 0;
     // for each game
     for game in INPUT.lines() {

@@ -32,9 +32,10 @@ pub fn star_1() {
 }
 
 pub fn star_2() {
-    let mut total_cards = 204;
-    let mut copies = [1; 204];
-    for (line_number, line) in INPUT.lines().enumerate() {
+    let lines: Vec<_> = INPUT.lines().collect();
+    let mut total_cards = lines.len();
+    let mut copies: Vec<usize> = vec![1; total_cards];
+    for (line_number, line) in lines.iter().enumerate() {
         let mut game_points = 0;
         let num_of_copies = copies[line_number];
         let mut game = line.split(": ").nth(1).unwrap().split(" | ");

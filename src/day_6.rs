@@ -28,24 +28,14 @@ pub fn star_1() {
 
 pub fn star_2() {
     let mut lines = INPUT.lines();
-    let time = lines
-        .next()
-        .unwrap()
-        .split_ascii_whitespace()
-        .skip(1)
-        .map(|s| s.to_string())
-        .reduce(|a, b| format!("{a}{b}"))
-        .unwrap()
+    let time_vec = lines.next().unwrap();
+    let time = time_vec
+        .replace(|s: char| !s.is_ascii_digit(), "")
         .parse::<i64>()
         .unwrap();
-    let distance = lines
-        .next()
-        .unwrap()
-        .split_ascii_whitespace()
-        .skip(1)
-        .map(|s| s.to_string())
-        .reduce(|a, b| format!("{a}{b}"))
-        .unwrap()
+    let distance_vec = lines.next().unwrap();
+    let distance = distance_vec
+        .replace(|s: char| !s.is_ascii_digit(), "")
         .parse::<i64>()
         .unwrap();
     let mut num_of_beat_times: i64 = 0;

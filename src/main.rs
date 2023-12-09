@@ -1,5 +1,5 @@
 #![feature(test)]
-// #![allow(dead_code)]
+#![allow(dead_code)]
 
 mod day_1;
 mod day_2;
@@ -19,13 +19,13 @@ fn main() {
     // day_3::star_1();
     // day_3::star_2();
     // day_4::star_1();
-    // day_4::star_2();
+    day_4::star_2();
     // day_5::star_1();
     // day_5::star_2();
     // day_6::star_1();
     // day_6::star_2();
-    day_7::star_1();
-    day_7::star_2();
+    // day_7::star_1();
+    // day_7::star_2();
     // day_8::star_1();
     // day_8::star_2();
     // day_9::star_1();

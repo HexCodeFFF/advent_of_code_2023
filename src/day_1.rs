@@ -1,5 +1,5 @@
+const INPUT: &str = include_str!("../inputs/day_1.txt");
 pub fn star_1() {
-    const INPUT: &str = include_str!("../inputs/day_1.txt");
     let mut sum = 0;
     for line in INPUT.lines() {
         let mut first_digit: Option<u32> = None;
@@ -23,9 +23,9 @@ pub fn star_1() {
     println!("{sum}");
 }
 
-pub fn star_2() -> u32 {
+pub fn star_2() {
     // let INPUT = std::fs::read_to_string("inputs/day_1.txt").unwrap();
-    const INPUT: &str = include_str!("../inputs/day_1.txt");
+
     let mut sum = 0;
     let num_names = [
         "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
@@ -66,7 +66,7 @@ pub fn star_2() -> u32 {
         // probably faster than string parsing
         sum += first_digit.unwrap() * 10 + last_digit.unwrap();
     }
-    sum
+    println!("{sum}");
 }
 
 #[cfg(test)]

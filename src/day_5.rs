@@ -29,6 +29,9 @@ pub fn star_1() {
         let mut map: Vec<Mapping> = vec![];
         // first entry is label, skip and theniterate
         for entry in section.split('\n').skip(1) {
+            if entry.is_empty() {
+                break;
+            }
             // iterate over split by spaces to get 3 data points
             let mut nums = entry.split(' ');
             map.push(Mapping {
@@ -70,8 +73,10 @@ fn is_in_ascending_order(list: &[i64]) -> bool {
 
 fn ranges_overlap(range: &Range<i64>, overlapper: &Range<i64>) -> RangeOverlap {
     // there is almost certianly a better way to do this but this works and my brain hurts
-
-    // range        -----
+    if range.start == overlapper.end {
+        dbg!(&range, &overlapper);
+    }
+    // range       ------
     // overlapper -----
     if is_in_ascending_order(&[overlapper.start, range.start, overlapper.end, range.end]) {
         RangeOverlap {
@@ -141,7 +146,7 @@ fn merge_ranges(vc: &mut Vec<Range<i64>>) {
     // dbg!(&vc);
 }
 
-pub fn star_2() {
+pub fn star_2() -> i64 {
     // each section
     let mut sections = INPUT.split("\n\n");
     let mut seeds_ranges = sections
@@ -168,6 +173,9 @@ pub fn star_2() {
         let mut map: Vec<Mapping> = vec![];
         // first entry is label, skip and then iterate
         for entry in section.split('\n').skip(1) {
+            if entry.is_empty() {
+                break;
+            }
             // iterate over split by spaces to get 3 data points
             let mut nums = entry.split(' ');
             map.push(Mapping {
@@ -193,17 +201,23 @@ pub fn star_2() {
                     );
                     let mut replace: Vec<Range<i64>> = vec![];
                     if let Some(l) = overlap.non_overlap_right {
-                        replace.push(l);
+                        if !l.is_empty() {
+                            replace.push(l);
+                        }
                     }
                     if let Some(l) = overlap.non_overlap_left {
-                        replace.push(l);
+                        if !l.is_empty() {
+                            replace.push(l);
+                        }
                     }
                     if let Some(mut l) = overlap.overlap {
                         // dbg!(&l);
                         l.start += entry.destination_range_start - entry.source_range_start;
                         l.end += entry.destination_range_start - entry.source_range_start;
                         // dbg!(&l);
-                        mapped_seeds.push(l)
+                        if !l.is_empty() {
+                            mapped_seeds.push(l);
+                        }
                     }
                     let len = replace.len();
                     this_seed.splice(i..i + 1, replace);
@@ -215,10 +229,13 @@ pub fn star_2() {
             new_seeds.append(&mut mapped_seeds);
         }
         seeds_ranges = new_seeds;
-        merge_ranges(&mut seeds_ranges);
+        // merge_ranges(&mut seeds_ranges);
     }
+    seeds_ranges.sort_by_key(|r| r.start);
+    dbg!(&seeds_ranges);
     let yippee = seeds_ranges.iter().map(|r| r.start).min().unwrap();
     println!("{yippee}");
+    yippee
 }
 
 #[cfg(test)]
