@@ -32,7 +32,8 @@ fn main() {
     // day_8::star_2();
     // day_9::star_1();
     // day_9::star_2();
-    // day_10::star_1();
+    day_10::star_1();
     // day_10::star_2();
-    day_11::star_1();
+    // day_11::star_1();
+    // day_11::star_2();
 }
