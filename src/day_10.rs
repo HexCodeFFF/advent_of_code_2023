@@ -133,6 +133,8 @@ pub fn star_1() {
 
 // yes i can do this programmatically but shut up this is more efficient and easier
 fn expand_pipe(input: &char) -> [[char; 3]; 3] {
+    // this looked nicer expanded out but rustfmt keeps collapsing it oh well
+    // it's supposed to be a 3x3 grid
     match input {
         '|' => [['.', '|', '.'], ['.', '|', '.'], ['.', '|', '.']],
         '-' => [['.', '.', '.'], ['-', '-', '-'], ['.', '.', '.']],
