@@ -2,6 +2,8 @@
 #![allow(dead_code)]
 
 mod day_1;
+mod day_10;
+mod day_11;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -19,7 +21,7 @@ fn main() {
     // day_3::star_1();
     // day_3::star_2();
     // day_4::star_1();
-    day_4::star_2();
+    // day_4::star_2();
     // day_5::star_1();
     // day_5::star_2();
     // day_6::star_1();
@@ -30,4 +32,7 @@ fn main() {
     // day_8::star_2();
     // day_9::star_1();
     // day_9::star_2();
+    // day_10::star_1();
+    // day_10::star_2();
+    day_11::star_1();
 }
